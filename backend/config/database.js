@@ -15,7 +15,7 @@ module.exports = ({ env }) => ({
       port: env.int("DATABASE_PORT", 5001),
       database: env("DATABASE_NAME", "emote-wars"),
       user: env("DATABASE_USERNAME", "postgres"),
-      password: env("DATABASE_PASSWORD", "root"),
+      password: env("DATABASE_PASSWORD", "Cha0sflar3@"),
     },
     debug: false,
   },

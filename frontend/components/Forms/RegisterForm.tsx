@@ -9,17 +9,20 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { Formik, Form } from "formik";
-import { loginSchema } from "../validation/loginSchema";
+import { registerSchema } from "../../validation/registerSchema";
 import FormInput from "./FormInput";
 import Link from "next/link";
+import { register } from "../../queries/register";
 
 interface FormValues {
+  username: string;
   email: string;
   password: string;
 }
 
 const LoginForm = () => {
   const initialValues: FormValues = {
+    username: "",
     email: "",
     password: "",
   };
@@ -32,7 +35,7 @@ const LoginForm = () => {
             color="white"
             maxW="full"
             w="400px"
-            h="400px"
+            h="500px"
             backgroundColor="gray.900"
             border="1px solid"
             borderColor="cyan.900"
@@ -40,14 +43,26 @@ const LoginForm = () => {
           >
             <Formik
               initialValues={initialValues}
-              validationSchema={loginSchema}
-              onSubmit={(values) => {}}
+              validationSchema={registerSchema}
+              onSubmit={(values) => {
+                const { username, email, password } = values;
+                register(username, email, password);
+              }}
             >
               {({ errors, touched, values, handleChange }) => {
                 return (
                   <Form>
                     <FormControl color="whiteAlpha.800" p="5">
-                      <Heading textAlign="center">Login</Heading>
+                      <Heading textAlign="center">Register</Heading>
+                      <FormInput
+                        labelFor="username"
+                        labelText="Username"
+                        inputName="username"
+                        type="text"
+                        value={values.username}
+                        isInvalid={!!(errors.username && touched.username)}
+                        onChange={handleChange}
+                      />
                       <FormInput
                         labelFor="email"
                         labelText="Email"
@@ -63,9 +78,7 @@ const LoginForm = () => {
                         inputName="password"
                         type="password"
                         value={values.password}
-                        isInvalid={
-                          errors.password && touched.password ? true : false
-                        }
+                        isInvalid={!!(errors.password && touched.password)}
                         onChange={handleChange}
                       />
                       <Button
@@ -85,8 +98,7 @@ const LoginForm = () => {
                         justifyContent="space-between"
                         fontSize="sm"
                       >
-                        <Link href="/register">Don't have an account?</Link>
-                        <Link href="/register">Forgot your password?</Link>
+                        <Link href="/register">Already have an account?</Link>
                       </Box>
                     </FormControl>
                   </Form>

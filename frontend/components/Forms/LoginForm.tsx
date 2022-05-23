@@ -9,24 +9,24 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { Formik, Form } from "formik";
-import { registerSchema } from "../validation/registerSchema";
+import { loginSchema } from "../../validation/loginSchema";
 import FormInput from "./FormInput";
 import Link from "next/link";
-import { register } from "../queries/register";
+import { signIn, useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 interface FormValues {
-  username: string;
   email: string;
   password: string;
 }
 
 const LoginForm = () => {
   const initialValues: FormValues = {
-    username: "",
     email: "",
     password: "",
   };
 
+  const router = useRouter();
   return (
     <Flex>
       <Container maxW="full" h="100vh" backgroundColor="blackAlpha.900">
@@ -35,7 +35,7 @@ const LoginForm = () => {
             color="white"
             maxW="full"
             w="400px"
-            h="500px"
+            h="400px"
             backgroundColor="gray.900"
             border="1px solid"
             borderColor="cyan.900"
@@ -43,26 +43,26 @@ const LoginForm = () => {
           >
             <Formik
               initialValues={initialValues}
-              validationSchema={registerSchema}
-              onSubmit={(values) => {
-                const { username, email, password } = values;
-                register(username, email, password);
+              validationSchema={loginSchema}
+              onSubmit={async (values, { setSubmitting }) => {
+                const response: any = await signIn("credentials", {
+                  redirect: false,
+                  email: values.email,
+                  password: values.password,
+                  callbackUrl: `${window.location.origin}`,
+                });
+
+                if (response.ok) {
+                  router.push("/");
+                }
+                setSubmitting(false);
               }}
             >
               {({ errors, touched, values, handleChange }) => {
                 return (
                   <Form>
                     <FormControl color="whiteAlpha.800" p="5">
-                      <Heading textAlign="center">Register</Heading>
-                      <FormInput
-                        labelFor="username"
-                        labelText="Username"
-                        inputName="username"
-                        type="text"
-                        value={values.username}
-                        isInvalid={!!(errors.username && touched.username)}
-                        onChange={handleChange}
-                      />
+                      <Heading textAlign="center">Login</Heading>
                       <FormInput
                         labelFor="email"
                         labelText="Email"
@@ -78,7 +78,9 @@ const LoginForm = () => {
                         inputName="password"
                         type="password"
                         value={values.password}
-                        isInvalid={!!(errors.password && touched.password)}
+                        isInvalid={
+                          errors.password && touched.password ? true : false
+                        }
                         onChange={handleChange}
                       />
                       <Button
@@ -98,7 +100,8 @@ const LoginForm = () => {
                         justifyContent="space-between"
                         fontSize="sm"
                       >
-                        <Link href="/register">Already have an account?</Link>
+                        <Link href="/register">Don't have an account?</Link>
+                        <Link href="/register">Forgot your password?</Link>
                       </Box>
                     </FormControl>
                   </Form>
