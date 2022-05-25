@@ -1,4 +1,5 @@
 import type { NextPage } from "next";
+import { Box } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -8,7 +9,6 @@ import Navbar from "../components/Navigation/Navbar";
 const Home: NextPage = () => {
   const { data: session } = useSession();
   const router = useRouter();
-  console.log(session);
 
   useEffect(() => {
     if (!session) {
@@ -19,7 +19,7 @@ const Home: NextPage = () => {
   }, []);
 
   return (
-    <>
+    <Box h="100vh" display="flex">
       <Navbar />
       <button
         onClick={() => {
@@ -28,7 +28,7 @@ const Home: NextPage = () => {
       >
         Sign out
       </button>
-    </>
+    </Box>
   );
 };
 
