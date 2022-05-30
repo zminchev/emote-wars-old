@@ -1,9 +1,10 @@
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Button, Text } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import React from "react";
 import useSWR from "swr";
 import { NavItem } from "../../models/NavItem";
+import { signOut } from "next-auth/react";
 
 const Navbar = () => {
   const { data: session } = useSession();
@@ -13,7 +14,6 @@ const Navbar = () => {
 
   return (
     <Box
-      ml="5"
       display="flex"
       flexDirection="column"
       bgColor="blackAlpha.700"
@@ -24,17 +24,32 @@ const Navbar = () => {
     >
       {data
         ? data.map((navItem: NavItem, index: number) => (
-            <Text
-              key={navItem.id}
-              textAlign="center"
-              mt={index === 0 ? "24" : "3"}
-              mb="3"
-              w="full"
-            >
-              <Link href={navItem.to}>{navItem.title}</Link>
-            </Text>
+            <Link href={navItem.to} key={navItem.id}>
+              <Text
+                textAlign="center"
+                mt={index === 0 ? "28" : "1"}
+                mb="1"
+                maxW="full"
+                w="100%"
+                _hover={{
+                  backgroundColor: "blackAlpha.800",
+                  cursor: "pointer",
+                }}
+              >
+                {navItem.title}
+              </Text>
+            </Link>
           ))
         : null}
+      <Button
+        m="auto"
+        variant="unstyled"
+        onClick={() => {
+          signOut();
+        }}
+      >
+        Sign out
+      </Button>
     </Box>
   );
 };
