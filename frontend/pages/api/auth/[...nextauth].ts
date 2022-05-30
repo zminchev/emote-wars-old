@@ -45,13 +45,13 @@ const options: NextAuthOptions = {
           jwtToken: user.jwt,
         };
       }
-      return token;
+      return Promise.resolve(token);
     },
     async session({ session, token }: any) {
       session.user.jwt = token.jwtToken;
       session.user.email = token.email;
       session.user.username = token.username;
-      return session;
+      return Promise.resolve(session);
     },
   },
   debug: true,

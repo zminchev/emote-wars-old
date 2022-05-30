@@ -1,14 +1,15 @@
 import type { NextPage } from "next";
+import { Box } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { signOut } from "next-auth/react";
+
 import Navbar from "../components/Navigation/Navbar";
+import Header from "../components/Resources/Header";
 
 const Home: NextPage = () => {
   const { data: session } = useSession();
   const router = useRouter();
-  console.log(session);
 
   useEffect(() => {
     if (!session) {
@@ -19,16 +20,12 @@ const Home: NextPage = () => {
   }, []);
 
   return (
-    <>
-      <Navbar />
-      <button
-        onClick={() => {
-          signOut();
-        }}
-      >
-        Sign out
-      </button>
-    </>
+    <Box>
+      <Header />
+      <Box h="calc(100vh - 100px)" display="flex">
+        <Navbar />
+      </Box>
+    </Box>
   );
 };
 
