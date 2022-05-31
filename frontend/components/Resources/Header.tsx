@@ -18,6 +18,8 @@ const Header = () => {
       justifyContent="space-between"
       bgColor="blackAlpha.700"
       gap={7}
+      borderBottom="1px solid"
+      borderColor="whiteAlpha.700"
     >
       <Heading ml="14" color="white">
         Emote Wars

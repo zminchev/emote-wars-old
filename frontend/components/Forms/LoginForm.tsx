@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Box,
   Container,
@@ -27,6 +27,14 @@ const LoginForm = () => {
   };
 
   const router = useRouter();
+  const { data: session } = useSession();
+
+  useEffect(() => {
+    if (session) {
+      router.push("/");
+    }
+  }, [session]);
+
   return (
     <Flex>
       <Container maxW="full" h="100vh" backgroundColor="blackAlpha.900">
@@ -45,16 +53,13 @@ const LoginForm = () => {
               initialValues={initialValues}
               validationSchema={loginSchema}
               onSubmit={async (values, { setSubmitting }) => {
-                const response: any = await signIn("credentials", {
+                await signIn("credentials", {
                   redirect: false,
                   email: values.email,
                   password: values.password,
                   callbackUrl: `${window.location.origin}`,
                 });
 
-                if (response.ok) {
-                  router.push("/");
-                }
                 setSubmitting(false);
               }}
             >

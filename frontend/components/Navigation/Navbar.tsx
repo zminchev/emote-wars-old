@@ -5,7 +5,6 @@ import React from "react";
 import useSWR from "swr";
 import { NavItem } from "../../models/NavItem";
 import { signOut } from "next-auth/react";
-import { useRouter } from "next/router";
 
 const Navbar = () => {
   const { data: session } = useSession();
@@ -17,8 +16,6 @@ const Navbar = () => {
     localStorage.removeItem("userJwt");
     signOut();
   };
-
-  console.log(data);
 
   return (
     <Box
