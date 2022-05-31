@@ -1,0 +1,25 @@
+{
+  "kind": "collectionType",
+  "collectionName": "working_hours",
+  "info": {
+    "singularName": "working-hour",
+    "pluralName": "working-hours",
+    "displayName": "WorkingHour",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "duration": {
+      "type": "integer"
+    },
+    "reward": {
+      "type": "biginteger"
+    },
+    "msDuration": {
+      "type": "biginteger"
+    }
+  }
+}

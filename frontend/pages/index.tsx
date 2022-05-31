@@ -4,9 +4,6 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import Navbar from "../components/Navigation/Navbar";
-import Header from "../components/Resources/Header";
-
 const Home: NextPage = () => {
   const { data: session } = useSession();
   const router = useRouter();
@@ -19,14 +16,7 @@ const Home: NextPage = () => {
     }
   }, []);
 
-  return (
-    <Box>
-      <Header />
-      <Box h="calc(100vh - 100px)" display="flex">
-        <Navbar />
-      </Box>
-    </Box>
-  );
+  return <div>Home page</div>;
 };
 
 export default Home;

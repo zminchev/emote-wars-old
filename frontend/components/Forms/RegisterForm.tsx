@@ -98,7 +98,7 @@ const LoginForm = () => {
                         justifyContent="space-between"
                         fontSize="sm"
                       >
-                        <Link href="/register">Already have an account?</Link>
+                        <Link href="/login">Already have an account?</Link>
                       </Box>
                     </FormControl>
                   </Form>
