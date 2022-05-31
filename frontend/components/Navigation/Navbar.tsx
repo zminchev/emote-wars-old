@@ -5,12 +5,20 @@ import React from "react";
 import useSWR from "swr";
 import { NavItem } from "../../models/NavItem";
 import { signOut } from "next-auth/react";
+import { useRouter } from "next/router";
 
 const Navbar = () => {
   const { data: session } = useSession();
-  const { data } = useSWR(
+  const { data } = useSWR<NavItem[]>(
     session ? "http://localhost:1337/api/nav-items" : null
   );
+
+  const logout = () => {
+    localStorage.removeItem("userJwt");
+    signOut();
+  };
+
+  console.log(data);
 
   return (
     <Box
@@ -22,8 +30,8 @@ const Navbar = () => {
       maxW="full"
       w="300px"
     >
-      {data
-        ? data.map((navItem: NavItem, index: number) => (
+      {data && data.length > 0
+        ? data.map((navItem, index) => (
             <Link href={navItem.to} key={navItem.id}>
               <Text
                 textAlign="center"
@@ -41,13 +49,7 @@ const Navbar = () => {
             </Link>
           ))
         : null}
-      <Button
-        m="auto"
-        variant="unstyled"
-        onClick={() => {
-          signOut();
-        }}
-      >
+      <Button m="auto" variant="unstyled" onClick={logout}>
         Sign out
       </Button>
     </Box>

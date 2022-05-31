@@ -1,10 +1,12 @@
 import { Box, Heading } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 import React from "react";
 import { useResources } from "../../queries/useResources";
 import Resource from "./Resource";
 
 const Header = () => {
-  const resources = useResources();
+  const { data: session } = useSession();
+  const resources = useResources(session);
 
   return (
     <Box
@@ -21,14 +23,16 @@ const Header = () => {
         Emote Wars
       </Heading>
       <Box display="flex" gap={6} w="85%" justifyContent="center">
-        {resources?.map((resource) => (
-          <Resource
-            key={resource.id}
-            name={resource.name}
-            value={resource.value}
-            image={resource.image}
-          />
-        ))}
+        {resources && resources.length > 0
+          ? resources?.map((resource) => (
+              <Resource
+                key={resource.id}
+                name={resource.name}
+                value={resource.value}
+                image={resource.image}
+              />
+            ))
+          : null}
       </Box>
     </Box>
   );
