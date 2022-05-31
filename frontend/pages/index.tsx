@@ -7,6 +7,7 @@ import { useEffect } from "react";
 const Home: NextPage = () => {
   const { data: session } = useSession();
   const router = useRouter();
+  console.log(session);
 
   useEffect(() => {
     if (!session) {

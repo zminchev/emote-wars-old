@@ -27,7 +27,9 @@ function MyApp({ Component, pageProps }: AppProps) {
                   <Component {...pageProps} />
                 </Box>
               </Box>
-            ) : null}
+            ) : (
+              <Component {...pageProps} />
+            )}
           </SWRConfig>
         </ChakraProvider>
       </SessionProvider>
