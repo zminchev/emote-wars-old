@@ -1,6 +1,6 @@
 import { Box, Heading } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import { useAppDispatch } from "../../../store/hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks/hooks";
 import { setTimerStatus } from "../../../store/slices/timerSlice";
 import { twoDigits } from "../../../utils/twoDigits";
 import useInterval from "../../../utils/useInterval";
@@ -11,14 +11,12 @@ export enum TimerStatus {
 }
 interface TimerProps {
   duration: number;
-  timerStatus: TimerStatus;
 }
 
-const Timer: React.FC<TimerProps> = ({ duration, timerStatus }) => {
+const Timer: React.FC<TimerProps> = ({ duration }) => {
   const dispatch = useAppDispatch();
+  const status = useAppSelector((state) => state.timer.status);
   const [secondsRemaining, setSecondsRemaining] = useState<number>(duration);
-  const [status, setStatus] = useState<TimerStatus>(timerStatus);
-
   const secondsToDisplay = secondsRemaining % 60;
   const minutesRemaining = (secondsRemaining - secondsToDisplay) / 60;
   const minutesToDisplay = minutesRemaining % 60;
@@ -29,7 +27,6 @@ const Timer: React.FC<TimerProps> = ({ duration, timerStatus }) => {
       if (secondsRemaining > 0) {
         setSecondsRemaining(secondsRemaining - 1);
       } else {
-        setStatus(TimerStatus.STOPPED);
         dispatch(setTimerStatus(TimerStatus.STOPPED));
       }
     },
@@ -39,9 +36,6 @@ const Timer: React.FC<TimerProps> = ({ duration, timerStatus }) => {
   useEffect(() => {
     setSecondsRemaining(duration);
   }, [duration]);
-  useEffect(() => {
-    setStatus(timerStatus);
-  }, [timerStatus]);
 
   return (
     <Box mt="12">

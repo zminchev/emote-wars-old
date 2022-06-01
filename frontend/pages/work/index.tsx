@@ -12,29 +12,20 @@ const Work = () => {
   const { data: session } = useSession();
   const workHours = useWorkHours(session);
   const [workDuration, setWorkDuration] = useState<number>(0);
-  const [status, setStatus] = useState<TimerStatus>(TimerStatus.STOPPED);
+
   const [activeHoursId, setActiveHoursId] = useState<number>(0);
   const timerStatus = useAppSelector((state) => state.timer.status);
+
   const dispatch = useAppDispatch();
 
   const work = useCallback(
     (amount: number, id: number) => {
-      setWorkDuration(2);
-      setStatus(TimerStatus.STARTED);
-      setActiveHoursId(id);
+      setWorkDuration(amount);
       dispatch(setTimerStatus(TimerStatus.STARTED));
+      setActiveHoursId(id);
     },
     [workDuration]
   );
-
-  useEffect(() => {
-    if (timerStatus.STARTED === "STARTED") {
-      console.log("start");
-    } else {
-      console.log("stop");
-    }
-    // setStatus(timerStatus);
-  }, [timerStatus]);
 
   return (
     <Box
@@ -75,8 +66,13 @@ const Work = () => {
                   duration={hours.duration.toString()}
                   msDuration={hours.msDuration.toString()}
                   approximateResources={hours.reward.toString()}
-                  isDisabled={status === TimerStatus.STARTED}
-                  isActive={activeHoursId === index + 1 ? true : false}
+                  isDisabled={timerStatus === TimerStatus.STARTED}
+                  isActive={
+                    timerStatus === TimerStatus.STARTED &&
+                    activeHoursId === index + 1
+                      ? true
+                      : false
+                  }
                   onClick={() => {
                     work(hours.msDuration, hours.id);
                   }}
@@ -84,7 +80,9 @@ const Work = () => {
               ))
             : null}
         </Box>
-        <Timer duration={workDuration} timerStatus={status} />
+        {timerStatus === TimerStatus.STARTED ? (
+          <Timer duration={workDuration} />
+        ) : null}
       </Container>
     </Box>
   );
