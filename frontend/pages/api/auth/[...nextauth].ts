@@ -40,6 +40,7 @@ const options: NextAuthOptions = {
     async jwt({ token, user }: any) {
       if (user) {
         token = {
+          id: user.id,
           username: user.username,
           email: user.email,
           jwtToken: user.jwt,
@@ -49,6 +50,7 @@ const options: NextAuthOptions = {
     },
     async session({ session, token }: any) {
       session.user.jwt = token.jwtToken;
+      session.user.id = token.id;
       session.user.email = token.email;
       session.user.username = token.username;
       return Promise.resolve(session);

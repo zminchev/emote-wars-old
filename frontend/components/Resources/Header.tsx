@@ -1,12 +1,47 @@
 import { Box, Heading } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
-import React from "react";
-import { useResources } from "../../queries/useResources";
+import React, { useEffect } from "react";
+import useSWR from "swr";
+import { useAppSelector } from "../../store/hooks/hooks";
+import { TimerStatus } from "../../utils/TimerStatus/TimerStatus";
 import Resource from "./Resource";
 
 const Header = () => {
   const { data: session } = useSession();
-  const resources = useResources(session);
+  const { data: user, mutate } = useSWR<any>(
+    "http://localhost:1337/api/users-permissions/user/findMe"
+  );
+
+  const timerStatus = useAppSelector((state) => state.timer.status);
+  const reward = useAppSelector((state) => state.reward.reward);
+
+  const updateResources = async () => {
+    if (user) {
+      console.log(reward);
+
+      await fetch(`http://localhost:1337/api/users/${user.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: `Bearer ${session?.user.jwt}`,
+        },
+        body: JSON.stringify({
+          gold: reward[0] + Number(user.gold),
+          wood: reward[1] + Number(user.wood),
+          diamonds: reward[2] + Number(user.diamonds),
+        }),
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (timerStatus === TimerStatus.STOPPED) {
+      if (user) {
+        mutate(updateResources(), { revalidate: true });
+      }
+    }
+  }, [timerStatus]);
 
   return (
     <Box
@@ -25,16 +60,26 @@ const Header = () => {
         Emote Wars
       </Heading>
       <Box display="flex" gap={6} w="85%" justifyContent="center">
-        {resources && resources.length > 0
-          ? resources?.map((resource) => (
-              <Resource
-                key={resource.id}
-                name={resource.name}
-                value={resource.value}
-                image={resource.image}
-              />
-            ))
-          : null}
+        <Resource
+          name="Gold"
+          value={user ? user.gold : 0}
+          image="https://res.cloudinary.com/duf8bd8co/image/upload/v1653933196/resources/gold_coysi7.png"
+        />
+        <Resource
+          name="Wood"
+          value={user ? user.wood : 0}
+          image="https://res.cloudinary.com/duf8bd8co/image/upload/v1653933195/resources/wood_zdkklt.png"
+        />
+        <Resource
+          name="Food"
+          value={user ? user.food : 0}
+          image="https://res.cloudinary.com/duf8bd8co/image/upload/v1653933195/resources/food_xouuhs.png"
+        />
+        <Resource
+          name="Diamonds"
+          value={user ? user.diamonds : 0}
+          image="https://res.cloudinary.com/duf8bd8co/image/upload/v1653933195/resources/diamond_brpl9a.png"
+        />
       </Box>
     </Box>
   );

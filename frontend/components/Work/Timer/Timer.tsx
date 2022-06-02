@@ -4,11 +4,8 @@ import { useAppDispatch, useAppSelector } from "../../../store/hooks/hooks";
 import { setTimerStatus } from "../../../store/slices/timerSlice";
 import { twoDigits } from "../../../utils/twoDigits";
 import useInterval from "../../../utils/useInterval";
+import { TimerStatus } from "../../../utils/TimerStatus/TimerStatus";
 
-export enum TimerStatus {
-  STARTED = "STARTED",
-  STOPPED = "STOPPED",
-}
 interface TimerProps {
   duration: number;
 }

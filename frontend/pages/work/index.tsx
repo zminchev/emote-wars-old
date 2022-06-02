@@ -4,28 +4,57 @@ import React, { useCallback, useEffect, useState } from "react";
 import Timer from "../../components/Work/Timer/Timer";
 import WorkHours from "../../components/Work/WorkHours";
 import { useWorkHours } from "../../queries/useWorkHours";
-import { TimerStatus } from "../../components/Work/Timer/Timer";
 import { useAppDispatch, useAppSelector } from "../../store/hooks/hooks";
 import { setTimerStatus } from "../../store/slices/timerSlice";
+import { endAction } from "../../utils/endAction";
+import { ActionType } from "../../utils/Actions/ActionType";
+import { setActionType } from "../../store/slices/actionSlice";
+import { useUser } from "../../queries/useUser";
+import { setRewards } from "../../store/slices/rewardSlice";
+import { TimerStatus } from "../../utils/TimerStatus/TimerStatus";
 
 const Work = () => {
   const { data: session } = useSession();
   const workHours = useWorkHours(session);
+  const user = useUser(session);
   const [workDuration, setWorkDuration] = useState<number>(0);
-
   const [activeHoursId, setActiveHoursId] = useState<number>(0);
-  const timerStatus = useAppSelector((state) => state.timer.status);
+  const [workFinished, setWorkFinished] = useState<boolean>(false);
 
+  const test = useAppSelector((state) => state.reward.reward);
+  const timerStatus = useAppSelector((state) => state.timer.status);
+  const actionType = useAppSelector((state) => state.action.actionType);
   const dispatch = useAppDispatch();
+
+  const level = 1;
 
   const work = useCallback(
     (amount: number, id: number) => {
-      setWorkDuration(amount);
       dispatch(setTimerStatus(TimerStatus.STARTED));
+      dispatch(setActionType(ActionType.WORK));
+      setWorkDuration(2);
       setActiveHoursId(id);
     },
     [workDuration]
   );
+
+  const distributeRewards = async () => {
+    if (workHours && activeHoursId !== 0) {
+      const reward = endAction(
+        actionType,
+        workHours[activeHoursId - 1].duration,
+        level
+      );
+      dispatch(setRewards(reward!));
+      dispatch(setActionType(ActionType.NONE));
+      setWorkFinished(true);
+    }
+  };
+  useEffect(() => {
+    if (timerStatus === TimerStatus.STOPPED) {
+      distributeRewards();
+    }
+  }, [timerStatus]);
 
   return (
     <Box
@@ -65,7 +94,6 @@ const Work = () => {
                   key={hours.id}
                   duration={hours.duration.toString()}
                   msDuration={hours.msDuration.toString()}
-                  approximateResources={hours.reward.toString()}
                   isDisabled={timerStatus === TimerStatus.STARTED}
                   isActive={
                     timerStatus === TimerStatus.STARTED &&
@@ -80,6 +108,12 @@ const Work = () => {
               ))
             : null}
         </Box>
+        {workFinished && timerStatus === TimerStatus.STOPPED ? (
+          <Text mt="4">
+            You were rewarded with {test[0]} gold, {test[1]} wood, {test[2]}{" "}
+            diamonds
+          </Text>
+        ) : null}
         {timerStatus === TimerStatus.STARTED ? (
           <Timer duration={workDuration} />
         ) : null}

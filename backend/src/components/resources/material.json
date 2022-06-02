@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_resources_materials",
+  "info": {
+    "displayName": "Material",
+    "icon": "ad"
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "value": {
+      "type": "biginteger"
+    },
+    "image": {
+      "type": "string"
+    }
+  }
+}
