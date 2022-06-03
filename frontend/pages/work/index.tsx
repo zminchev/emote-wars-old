@@ -11,9 +11,13 @@ import { ActionType } from "../../utils/Actions/ActionType";
 import { setActionType } from "../../store/slices/actionSlice";
 import { setRewards } from "../../store/slices/rewardSlice";
 import { TimerStatus } from "../../utils/TimerStatus/TimerStatus";
+import { updateResources } from "../../utils/Resources/updateResources";
+import useSWR from "swr";
+import { useUser } from "../../queries/useUser";
 
 const Work = () => {
   const { data: session } = useSession();
+  const { user, mutate } = useUser(session);
   const workHours = useWorkHours(session);
   const [workDuration, setWorkDuration] = useState<number>(0);
   const [activeHoursId, setActiveHoursId] = useState<number>(0);
@@ -36,22 +40,25 @@ const Work = () => {
     [workDuration]
   );
 
-  const distributeRewards = async () => {
-    if (workHours && activeHoursId !== 0) {
-      const reward = endAction(
-        actionType,
-        workHours[activeHoursId - 1].duration,
-        level
-      );
-      dispatch(setRewards(reward!));
-      dispatch(setActionType(ActionType.NONE));
-      setWorkFinished(true);
-    }
-  };
-  useEffect(() => {
+  const distributeRewards = useCallback(() => {
     if (timerStatus === TimerStatus.STOPPED) {
-      distributeRewards();
+      if (workHours && activeHoursId !== 0) {
+        const reward = endAction(
+          actionType,
+          workHours[activeHoursId - 1].duration,
+          level
+        );
+        mutate(updateResources(reward!, user!, actionType, session), {
+          revalidate: true,
+        });
+        dispatch(setRewards(reward!));
+        dispatch(setActionType(ActionType.NONE));
+        setWorkFinished(true);
+      }
     }
+  }, [timerStatus, rewards]);
+  useEffect(() => {
+    distributeRewards();
   }, [timerStatus]);
 
   return (
@@ -106,12 +113,12 @@ const Work = () => {
               ))
             : null}
         </Box>
-        {workFinished && timerStatus === TimerStatus.STOPPED ? (
+        {/* {workFinished && timerStatus === TimerStatus.STOPPED ? (
           <Text mt="4">
             You were rewarded with {rewards[0]} gold, {rewards[1]} wood,{" "}
             {rewards[2]} diamonds
           </Text>
-        ) : null}
+        ) : null} */}
         {timerStatus === TimerStatus.STARTED ? (
           <Timer duration={workDuration} />
         ) : null}

@@ -1,16 +1,17 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import type { RootState } from "../index";
+type RewardState = { reward: number[] };
 
-const initialState = {
-  reward: [0, 0, 0, 0],
+const initialState: RewardState = {
+  reward: [],
 };
 
 export const rewardSlice = createSlice({
   name: "rewards",
   initialState,
   reducers: {
-    setRewards: (state: any, action: PayloadAction<number[]>) => {
+    //@ts-ignore
+    setRewards: (state, action: PayloadAction<number[]>) => {
       state.reward = action.payload;
     },
   },

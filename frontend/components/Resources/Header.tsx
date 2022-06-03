@@ -1,54 +1,14 @@
 import { Box, Heading } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
-import React, { useEffect } from "react";
+import React from "react";
 import useSWR from "swr";
-import { useAppSelector } from "../../store/hooks/hooks";
-import { ActionType } from "../../utils/Actions/ActionType";
-import { TimerStatus } from "../../utils/TimerStatus/TimerStatus";
+import { useUser } from "../../queries/useUser";
+
 import Resource from "./Resource";
 
 const Header = () => {
   const { data: session } = useSession();
-  const { data: user, mutate } = useSWR<any>(
-    "http://localhost:1337/api/users-permissions/user/findMe"
-  );
-
-  const timerStatus = useAppSelector((state) => state.timer.status);
-  const reward = useAppSelector((state) => state.reward.reward);
-  const actionType = useAppSelector((state) => state.action.actionType);
-
-  const updateResources = async () => {
-    if (user) {
-      const workReward = {
-        gold: reward[0] + Number(user.gold),
-        wood: reward[1] + Number(user.wood),
-        diamonds: reward[2] + Number(user.diamonds),
-      };
-      const huntingReward = {
-        food: reward[0] + Number(user.food),
-      };
-
-      await fetch(`http://localhost:1337/api/users/${user.id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: `Bearer ${session?.user.jwt}`,
-        },
-        body: JSON.stringify(
-          actionType === ActionType.WORK ? workReward : huntingReward
-        ),
-      });
-    }
-  };
-
-  useEffect(() => {
-    if (timerStatus === TimerStatus.STOPPED) {
-      if (user) {
-        mutate(updateResources(), { revalidate: true });
-      }
-    }
-  }, [timerStatus]);
+  const { user } = useUser(session);
 
   return (
     <Box
