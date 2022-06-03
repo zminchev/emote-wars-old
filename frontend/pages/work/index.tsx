@@ -9,24 +9,22 @@ import { setTimerStatus } from "../../store/slices/timerSlice";
 import { endAction } from "../../utils/endAction";
 import { ActionType } from "../../utils/Actions/ActionType";
 import { setActionType } from "../../store/slices/actionSlice";
-import { useUser } from "../../queries/useUser";
 import { setRewards } from "../../store/slices/rewardSlice";
 import { TimerStatus } from "../../utils/TimerStatus/TimerStatus";
 
 const Work = () => {
   const { data: session } = useSession();
   const workHours = useWorkHours(session);
-  const user = useUser(session);
   const [workDuration, setWorkDuration] = useState<number>(0);
   const [activeHoursId, setActiveHoursId] = useState<number>(0);
   const [workFinished, setWorkFinished] = useState<boolean>(false);
 
-  const test = useAppSelector((state) => state.reward.reward);
+  const rewards = useAppSelector((state) => state.reward.reward);
   const timerStatus = useAppSelector((state) => state.timer.status);
   const actionType = useAppSelector((state) => state.action.actionType);
   const dispatch = useAppDispatch();
 
-  const level = 1;
+  const level = 150;
 
   const work = useCallback(
     (amount: number, id: number) => {
@@ -110,8 +108,8 @@ const Work = () => {
         </Box>
         {workFinished && timerStatus === TimerStatus.STOPPED ? (
           <Text mt="4">
-            You were rewarded with {test[0]} gold, {test[1]} wood, {test[2]}{" "}
-            diamonds
+            You were rewarded with {rewards[0]} gold, {rewards[1]} wood,{" "}
+            {rewards[2]} diamonds
           </Text>
         ) : null}
         {timerStatus === TimerStatus.STARTED ? (

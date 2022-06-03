@@ -7,14 +7,15 @@ import { NavItem } from "../../models/NavItem";
 import { signOut } from "next-auth/react";
 
 const Navbar = () => {
-  const { data: session } = useSession();
+  const { status } = useSession();
+
   const { data } = useSWR<NavItem[]>(
-    session ? "http://localhost:1337/api/nav-items" : null
+    status === "authenticated" ? "http://localhost:1337/api/nav-items" : null
   );
 
   const logout = () => {
     localStorage.removeItem("userJwt");
-    signOut();
+    signOut({ redirect: false });
   };
 
   return (

@@ -10,7 +10,7 @@ export const endAction = (
   duration: number,
   playerLevel: number
 ) => {
-  let gold, wood;
+  let gold, wood, food;
   let diamonds = 0;
   switch (actionType) {
     case ActionType.WORK:
@@ -23,8 +23,8 @@ export const endAction = (
       return [gold, wood, diamonds];
 
     case ActionType.HUNTING:
-      generateFood(duration, playerLevel);
-      break;
+      food = generateFood(duration, playerLevel);
+      return [food];
     default:
       return;
   }
