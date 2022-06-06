@@ -1,4 +1,4 @@
-import { Resource } from "./Resource";
+import { Timer } from "./Timer";
 import { Role } from "./Role";
 
 export type User = {
@@ -11,4 +11,6 @@ export type User = {
   diamonds: number;
   food: number;
   role: Role;
+  timer: Timer;
+  level: number;
 };

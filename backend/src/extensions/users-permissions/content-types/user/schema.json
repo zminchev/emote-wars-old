@@ -83,6 +83,15 @@
       "type": "component",
       "repeatable": false,
       "component": "resources.resource"
+    },
+    "timer": {
+      "type": "component",
+      "repeatable": false,
+      "component": "timers.timer"
+    },
+    "level": {
+      "type": "biginteger",
+      "default": "1"
     }
   }
 }

@@ -1,4 +1,4 @@
-import { Box, Heading } from "@chakra-ui/react";
+import { Box, Button, Heading, Text } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks/hooks";
 import { setTimerStatus } from "../../../store/slices/timerSlice";
@@ -35,7 +35,7 @@ const Timer: React.FC<TimerProps> = ({ duration }) => {
   }, [duration]);
 
   return (
-    <Box mt="12">
+    <Box mt="6">
       <Heading>
         Time left: {twoDigits(hoursToDisplay)}:{twoDigits(minutesToDisplay)}:
         {twoDigits(secondsToDisplay)}

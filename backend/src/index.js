@@ -1,5 +1,7 @@
 "use strict";
 
+const { startTimer } = require("../timer-utils");
+
 module.exports = {
   /**
    * An asynchronous register function that runs before
@@ -17,11 +19,25 @@ module.exports = {
    * run jobs, or perform some special logic.
    */
   bootstrap(/*{ strapi }*/) {
-    // strapi.db.lifecycles.subscribe({
-    //   models: ["plugin::users-permissions.user"],
-    //   async afterCreate(event) {
-    //     const {params} = event;
-    //   },
-    // });
+    strapi.db.lifecycles.subscribe({
+      models: ["plugin::users-permissions.user"],
+      async beforeUpdate(event) {},
+      async afterUpdate(event) {
+        const user = await strapi.entityService.findOne(
+          "plugin::users-permissions.user",
+          2,
+          { populate: ["resource", "resource.material", "role", "timer"] }
+        );
+        const { id, timer, level } = user;
+        const hoursInMiliseconds = timer.hoursInSeconds * 1000;
+        startTimer(
+          id,
+          timer.hoursToWork,
+          hoursInMiliseconds,
+          level,
+          timer.actionType
+        );
+      },
+    });
   },
 };

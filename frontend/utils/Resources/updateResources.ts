@@ -9,15 +9,35 @@ export const updateResources = async (
 ) => {
   if (user) {
     const workReward = {
-      gold: reward[0] + Number(user.gold),
-      wood: reward[1] + Number(user.wood),
-      diamonds: reward[2] + Number(user.diamonds),
+      data: {
+        gold: reward[0] + Number(user.gold),
+        wood: reward[1] + Number(user.wood),
+        diamonds: reward[2] + Number(user.diamonds),
+        timer: {
+          startTime: "0",
+          isWorking: false,
+          hoursToWork: 0,
+          actionType: "NONE",
+          activeHourId: 0,
+          hoursInSeconds: 0,
+        },
+      },
     };
     const huntingReward = {
-      food: reward[0] + Number(user.food),
+      data: {
+        food: reward.length > 0 ? reward[0] + Number(user.food) : 0,
+        timer: {
+          startTime: "0",
+          isWorking: false,
+          hoursToWork: 0,
+          actionType: "NONE",
+          activeHourId: 0,
+          hoursInSeconds: 0,
+        },
+      },
     };
 
-    await fetch(`http://localhost:1337/api/users/${user.id}`, {
+    const response = await fetch(`http://localhost:1337/api/users/${user.id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -28,6 +48,8 @@ export const updateResources = async (
         actionType === ActionType.WORK ? workReward : huntingReward
       ),
     });
+    const data = await response.json();
+    console.log(data);
   }
   return user;
 };
