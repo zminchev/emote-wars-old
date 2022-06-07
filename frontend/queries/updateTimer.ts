@@ -1,10 +1,8 @@
 interface TimerData {
-  data: {
-    timer: {
-      startTime: string;
-      isWorking: boolean;
-      hoursToWork: number;
-    };
+  timer: {
+    startTime: string;
+    isWorking: boolean;
+    hoursToWork: number;
   };
 }
 

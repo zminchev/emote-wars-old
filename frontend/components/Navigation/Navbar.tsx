@@ -26,7 +26,7 @@ const Navbar = () => {
       color="white"
       alignItems="center"
       maxW="full"
-      w="300px"
+      minW="300px"
     >
       {data && data.length > 0
         ? data.map((navItem, index) => (

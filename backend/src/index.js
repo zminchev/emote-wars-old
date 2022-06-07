@@ -21,22 +21,17 @@ module.exports = {
   bootstrap(/*{ strapi }*/) {
     strapi.db.lifecycles.subscribe({
       models: ["plugin::users-permissions.user"],
-      async beforeUpdate(event) {},
       async afterUpdate(event) {
+        const { id } = event.result;
         const user = await strapi.entityService.findOne(
           "plugin::users-permissions.user",
-          2,
+          id,
           { populate: ["resource", "resource.material", "role", "timer"] }
         );
-        const { id, timer, level } = user;
-        const hoursInMiliseconds = timer.hoursInSeconds * 1000;
-        startTimer(
-          id,
-          timer.hoursToWork,
-          hoursInMiliseconds,
-          level,
-          timer.actionType
-        );
+        if (user.timer) {
+          let hoursInMilliseconds = user.timer.hoursInSeconds * 1000;
+          startTimer(hoursInMilliseconds, user.timer.hoursInSeconds);
+        }
       },
     });
   },

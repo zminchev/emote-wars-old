@@ -21,74 +21,91 @@ const Work = () => {
   const workHours = useWorkHours(session);
   const [workDuration, setWorkDuration] = useState<number>(0);
   const [timeRemaining, setTimeRemaining] = useState<number>(0);
+  const [initialLoad, setInitialLoad] = useState<boolean>(true);
 
   const rewards = useAppSelector((state) => state.reward.reward);
-  const timerStatus = useAppSelector((state) => state.timer.status);
+  const timer = useAppSelector((state) => state.timer);
+  const { status, secondsRemaining } = timer;
   const actionType = useAppSelector((state) => state.action.actionType);
   const dispatch = useAppDispatch();
 
-  const work = useCallback(
-    (amount: number, id: number, duration: number) => {
-      dispatch(setTimerStatus(TimerStatus.STARTED));
-      dispatch(setActionType(ActionType.WORK));
-      const timerData = {
-        data: {
+  const work = (
+    hoursInSeconds: number,
+    activeHourId: number,
+    duration: number
+  ) => {
+    dispatch(setActionType(ActionType.WORK));
+    dispatch(setTimerStatus(TimerStatus.STARTED));
+    setWorkDuration(hoursInSeconds);
+    const timerData = {
+      timer: {
+        startTime: Date.now().toString(),
+        isWorking: true,
+        hoursToWork: duration,
+        activeHourId: activeHourId - 1,
+        actionType: ActionType.WORK,
+        hoursInSeconds,
+      },
+    };
+    mutate(updateTimer(timerData, user?.id!, session?.user.jwt!), {
+      revalidate: true,
+    });
+  };
+
+  const distributeRewards = () => {
+    if (user && workHours) {
+      if (secondsRemaining === 0 && TimerStatus.FINISHED) {
+        const workHourDuration = workHours[user.timer.activeHourId].duration;
+        let reward = endAction(actionType, workHourDuration, user.level);
+
+        mutate(updateResources(reward!, user, actionType, session), {
+          revalidate: true,
+        });
+        const endTimerData = {
           timer: {
-            startTime: Date.now().toString(),
-            isWorking: true,
-            hoursToWork: duration,
-            activeHourId: id - 1,
-            actionType: ActionType.WORK,
-            hoursInSeconds: amount,
+            startTime: "0",
+            isWorking: false,
+            hoursToWork: 0,
+            activeHourId: 0,
+            actionType: ActionType.NONE,
+            hoursInSeconds: 0,
           },
-        },
-      };
-      setWorkDuration(amount);
-      mutate(updateTimer(timerData, user?.id!, session?.user.jwt!), {
-        revalidate: true,
-      });
-    },
-    [workDuration]
-  );
+        };
+        mutate(updateTimer(endTimerData, user.id!, session?.user.jwt!));
+      }
+    }
+  };
 
-  // const distributeRewards = () => {
-  //   if (timerStatus === TimerStatus.STOPPED && rewards) {
-  //     console.log("vleznah tuks");
-  //     if (user && workHours) {
-  //       const reward = endAction(
-  //         actionType,
-  //         workHours[user.timer.activeHourId].duration,
-  //         user.level
-  //       );
-  //       dispatch(setRewards(reward!));
-  //       mutate(updateResources(reward!, user!, actionType, session), {
-  //         revalidate: true,
-  //       });
-  //       dispatch(setActionType(ActionType.NONE));
-  //     }
-  //   }
-  // };
+  const resetTimerStatus = () => {
+    dispatch(setTimerStatus(TimerStatus.STOPPED));
+  };
 
-  // useEffect(() => {
-  //   distributeRewards();
-  // }, [rewards]);
+  useEffect(() => {
+    if (status === TimerStatus.FINISHED) {
+      distributeRewards();
+      resetTimerStatus();
+    }
+  }, [status]);
 
   useEffect(() => {
     if (user) {
-      if (user.timer.isWorking) {
-        dispatch(setTimerStatus(TimerStatus.STARTED));
-        dispatch(setActionType(ActionType.WORK));
+      setInitialLoad(false);
+      if (!initialLoad) {
+        if (user.timer && user.timer.isWorking) {
+          dispatch(setTimerStatus(TimerStatus.STARTED));
+          dispatch(setActionType(ActionType.WORK));
 
-        const startTime = new Date(+user.timer.startTime);
-        const currentTime = Date.now();
+          const startTime = new Date(+user.timer.startTime);
+          const currentTime = Date.now();
 
-        const elapsedTime = currentTime - startTime.getTime();
-        const remainingTime = +user.timer.hoursInSeconds - elapsedTime / 1000;
+          const elapsedTime = currentTime - startTime.getTime();
+          const remainingTime = +user.timer.hoursInSeconds - elapsedTime / 1000;
 
-        setTimeRemaining(Math.round(remainingTime));
+          setTimeRemaining(Math.round(remainingTime));
+        }
       }
     }
-  }, [user]);
+  }, [initialLoad, user?.timer]);
 
   return (
     <Box
@@ -128,8 +145,10 @@ const Work = () => {
                   key={hours.id}
                   duration={hours.duration.toString()}
                   msDuration={hours.msDuration.toString()}
-                  isDisabled={user ? user.timer.isWorking : false}
+                  isDisabled={user && user.timer ? user.timer.isWorking : false}
                   isActive={
+                    user &&
+                    user.timer &&
                     user?.timer.isWorking === true &&
                     Number(user?.timer.activeHourId) === index
                       ? true
@@ -150,7 +169,7 @@ const Work = () => {
             {rewards[2]} diamonds
           </Text>
         ) : null} */}
-        {timerStatus === TimerStatus.STARTED ? (
+        {status === TimerStatus.STARTED ? (
           <Timer duration={timeRemaining ? timeRemaining : workDuration} />
         ) : null}
       </Container>

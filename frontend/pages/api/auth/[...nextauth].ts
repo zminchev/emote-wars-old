@@ -10,7 +10,7 @@ const options: NextAuthOptions = {
         email: { label: "Email", type: "text" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials, req) {
+      async authorize(credentials) {
         const fetch_url = `http://localhost:1337/api/auth/local`;
         const params = {
           method: "POST",
@@ -62,7 +62,7 @@ const options: NextAuthOptions = {
   },
 };
 const Auth = (req: NextApiRequest, res: NextApiResponse) => {
-  NextAuth(req, res, options);
+  return NextAuth(req, res, options);
 };
 
 export default Auth;
