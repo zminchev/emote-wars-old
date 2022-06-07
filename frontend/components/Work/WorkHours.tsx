@@ -1,5 +1,6 @@
-import { Box, Center, Heading, ResponsiveValue, Text } from "@chakra-ui/react";
+import { Box, Center, Heading } from "@chakra-ui/react";
 import React from "react";
+import Card from "../UI/Card";
 
 interface WorkHoursProps {
   id: string;
@@ -18,26 +19,13 @@ const WorkHours: React.FC<WorkHoursProps> = ({
   onClick,
 }) => {
   return (
-    <Box
-      pointerEvents={isDisabled ? "none" : "auto"}
-      opacity={isDisabled ? "0.5" : "1"}
-      w="25%"
-      h="100%"
-      mr="1"
-      border="1px solid"
-      borderColor={isActive ? "whiteAlpha.900" : "whiteAlpha.600"}
-      bgColor={isActive ? "blackAlpha.300" : ""}
-      borderRadius="6"
-      _hover={{ cursor: "pointer", backgroundColor: "blackAlpha.200" }}
-      onClick={onClick}
-      id={id}
-    >
+    <Card id={id} isDisabled={isDisabled} isActive={isActive} onClick={onClick}>
       <Center h="100%">
         <Box display="flex" flexDirection="column" textAlign="center">
           <Heading>{duration} hours</Heading>
         </Box>
       </Center>
-    </Box>
+    </Card>
   );
 };
 
