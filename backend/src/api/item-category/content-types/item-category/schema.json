@@ -1,0 +1,31 @@
+{
+  "kind": "collectionType",
+  "collectionName": "item_categories",
+  "info": {
+    "singularName": "item-category",
+    "pluralName": "item-categories",
+    "displayName": "ItemCategory",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "to": {
+      "type": "string"
+    },
+    "image": {
+      "type": "string"
+    },
+    "swords": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::sword.sword",
+      "mappedBy": "item_category"
+    }
+  }
+}

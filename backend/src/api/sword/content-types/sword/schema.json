@@ -1,0 +1,36 @@
+{
+  "kind": "collectionType",
+  "collectionName": "swords",
+  "info": {
+    "singularName": "sword",
+    "pluralName": "swords",
+    "displayName": "Sword",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "attack": {
+      "type": "biginteger"
+    },
+    "itemLevel": {
+      "type": "biginteger"
+    },
+    "price": {
+      "type": "component",
+      "repeatable": false,
+      "component": "items.price"
+    },
+    "item_category": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::item-category.item-category",
+      "inversedBy": "swords"
+    }
+  }
+}

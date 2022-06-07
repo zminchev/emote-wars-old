@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "collectionName": "shields",
+  "info": {
+    "singularName": "shield",
+    "pluralName": "shields",
+    "displayName": "Shield",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "defense": {
+      "type": "biginteger"
+    },
+    "itemLevel": {
+      "type": "biginteger"
+    },
+    "price": {
+      "type": "component",
+      "repeatable": false,
+      "component": "items.price"
+    }
+  }
+}
