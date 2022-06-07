@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_resources_resources",
+  "info": {
+    "displayName": "Resource",
+    "icon": "allergies"
+  },
+  "options": {},
+  "attributes": {
+    "material": {
+      "displayName": "Material",
+      "type": "component",
+      "repeatable": true,
+      "component": "resources.material"
+    }
+  }
+}

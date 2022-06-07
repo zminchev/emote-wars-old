@@ -10,7 +10,7 @@ const options: NextAuthOptions = {
         email: { label: "Email", type: "text" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials, req) {
+      async authorize(credentials) {
         const fetch_url = `http://localhost:1337/api/auth/local`;
         const params = {
           method: "POST",
@@ -40,6 +40,7 @@ const options: NextAuthOptions = {
     async jwt({ token, user }: any) {
       if (user) {
         token = {
+          id: user.id,
           username: user.username,
           email: user.email,
           jwtToken: user.jwt,
@@ -49,6 +50,7 @@ const options: NextAuthOptions = {
     },
     async session({ session, token }: any) {
       session.user.jwt = token.jwtToken;
+      session.user.id = token.id;
       session.user.email = token.email;
       session.user.username = token.username;
       return Promise.resolve(session);
@@ -60,7 +62,7 @@ const options: NextAuthOptions = {
   },
 };
 const Auth = (req: NextApiRequest, res: NextApiResponse) => {
-  NextAuth(req, res, options);
+  return NextAuth(req, res, options);
 };
 
 export default Auth;

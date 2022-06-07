@@ -1,0 +1,30 @@
+{
+  "collectionName": "components_timers_timers",
+  "info": {
+    "displayName": "timer",
+    "icon": "air-freshener",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "startTime": {
+      "type": "string"
+    },
+    "isWorking": {
+      "type": "boolean",
+      "default": false
+    },
+    "hoursToWork": {
+      "type": "integer"
+    },
+    "activeHourId": {
+      "type": "biginteger"
+    },
+    "actionType": {
+      "type": "string"
+    },
+    "hoursInSeconds": {
+      "type": "biginteger"
+    }
+  }
+}

@@ -5,7 +5,6 @@ interface WorkHoursProps {
   id: string;
   duration: string;
   msDuration: string;
-  approximateResources: string;
   isDisabled: boolean;
   isActive: boolean;
   onClick: () => void;
@@ -14,7 +13,6 @@ interface WorkHoursProps {
 const WorkHours: React.FC<WorkHoursProps> = ({
   id,
   duration,
-  approximateResources,
   isDisabled,
   isActive,
   onClick,
@@ -37,7 +35,6 @@ const WorkHours: React.FC<WorkHoursProps> = ({
       <Center h="100%">
         <Box display="flex" flexDirection="column" textAlign="center">
           <Heading>{duration} hours</Heading>
-          <Text mt="20">Approximate resources: {approximateResources}</Text>
         </Box>
       </Center>
     </Box>

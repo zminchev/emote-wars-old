@@ -1,4 +1,6 @@
-'use strict';
+"use strict";
+
+const { startTimer } = require("../timer-utils");
 
 module.exports = {
   /**
@@ -16,5 +18,21 @@ module.exports = {
    * This gives you an opportunity to set up your data model,
    * run jobs, or perform some special logic.
    */
-  bootstrap(/*{ strapi }*/) {},
+  bootstrap(/*{ strapi }*/) {
+    strapi.db.lifecycles.subscribe({
+      models: ["plugin::users-permissions.user"],
+      async afterUpdate(event) {
+        const { id } = event.result;
+        const user = await strapi.entityService.findOne(
+          "plugin::users-permissions.user",
+          id,
+          { populate: ["resource", "resource.material", "role", "timer"] }
+        );
+        if (user.timer) {
+          let hoursInMilliseconds = user.timer.hoursInSeconds * 1000;
+          startTimer(hoursInMilliseconds, user.timer.hoursInSeconds);
+        }
+      },
+    });
+  },
 };

@@ -7,14 +7,15 @@ import { NavItem } from "../../models/NavItem";
 import { signOut } from "next-auth/react";
 
 const Navbar = () => {
-  const { data: session } = useSession();
+  const { status } = useSession();
+
   const { data } = useSWR<NavItem[]>(
-    session ? "http://localhost:1337/api/nav-items" : null
+    status === "authenticated" ? "http://localhost:1337/api/nav-items" : null
   );
 
   const logout = () => {
     localStorage.removeItem("userJwt");
-    signOut();
+    signOut({ redirect: false });
   };
 
   return (
@@ -25,7 +26,7 @@ const Navbar = () => {
       color="white"
       alignItems="center"
       maxW="full"
-      w="300px"
+      minW="300px"
     >
       {data && data.length > 0
         ? data.map((navItem, index) => (

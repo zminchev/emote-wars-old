@@ -1,9 +1,13 @@
 import { Action, configureStore, ThunkAction } from "@reduxjs/toolkit";
+import actionSlice from "./slices/actionSlice";
+import rewardSlice from "./slices/rewardSlice";
 import timerSlice from "./slices/timerSlice";
 
 export const store = configureStore({
   reducer: {
     timer: timerSlice,
+    action: actionSlice,
+    reward: rewardSlice,
   },
 });
 

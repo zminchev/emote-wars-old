@@ -1,21 +1,25 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { TimerStatus } from "../../components/Work/Timer/Timer";
+import { TimerStatus } from "../../utils/TimerStatus/TimerStatus";
+
 import type { RootState } from "../index";
 
 const initialState = {
-  status: TimerStatus,
+  status: TimerStatus.STOPPED,
+  secondsRemaining: 0,
 };
 
 export const timerSlice = createSlice({
-  name: "timerStatus",
+  name: "timer",
   initialState,
   reducers: {
-    setTimerStatus: (state, action: PayloadAction<string>) => {
+    setTimerStatus: (state: any, action: PayloadAction<string>) => {
       state.status = action.payload;
+    },
+    setSecondsRemaining: (state: any, action: PayloadAction<number>) => {
+      state.secondsRemaining = action.payload;
     },
   },
 });
-export const { setTimerStatus } = timerSlice.actions;
-export const selectStatus = (state: RootState) => state.timer.status;
+export const { setTimerStatus, setSecondsRemaining } = timerSlice.actions;
 
 export default timerSlice.reducer;

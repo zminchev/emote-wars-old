@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Container,
@@ -7,6 +7,7 @@ import {
   FormControl,
   Heading,
   Button,
+  Spinner,
 } from "@chakra-ui/react";
 import { Formik, Form } from "formik";
 import { loginSchema } from "../../validation/loginSchema";
@@ -21,6 +22,8 @@ interface FormValues {
 }
 
 const LoginForm = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const initialValues: FormValues = {
     email: "",
     password: "",
@@ -32,6 +35,7 @@ const LoginForm = () => {
   useEffect(() => {
     if (session) {
       router.push("/");
+      localStorage.setItem("userJwt", session.user.jwt);
     }
   }, [session]);
 
@@ -53,6 +57,7 @@ const LoginForm = () => {
               initialValues={initialValues}
               validationSchema={loginSchema}
               onSubmit={async (values, { setSubmitting }) => {
+                setIsLoading(true);
                 await signIn("credentials", {
                   redirect: false,
                   email: values.email,
@@ -61,6 +66,7 @@ const LoginForm = () => {
                 });
 
                 setSubmitting(false);
+                setIsLoading(false);
               }}
             >
               {({ errors, touched, values, handleChange }) => {
@@ -92,11 +98,13 @@ const LoginForm = () => {
                         w="100%"
                         mt="10"
                         color="black"
-                        backgroundColor="cyan"
+                        backgroundColor={isLoading ? "gray" : "cyan"}
                         borderRadius="0"
                         type="submit"
+                        disabled={isLoading}
+                        _disabled={{ pointerEvents: "none" }}
                       >
-                        Login
+                        {isLoading ? <Spinner speed="0.3s" /> : "Login"}
                       </Button>
                       <Box
                         color="cyan"
@@ -106,7 +114,9 @@ const LoginForm = () => {
                         fontSize="sm"
                       >
                         <Link href="/register">Don't have an account?</Link>
-                        <Link href="/register">Forgot your password?</Link>
+                        <Link href="/reset-password">
+                          Forgot your password?
+                        </Link>
                       </Box>
                     </FormControl>
                   </Form>
