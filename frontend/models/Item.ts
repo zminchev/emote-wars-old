@@ -1,6 +1,7 @@
-import { Price } from "../models/Price";
+import { ItemCategory } from "./ItemCategory";
+import { Price } from "./Price";
 
-export interface ItemProps {
+export type Item = {
   id: string;
   name: string;
   image: string;
@@ -9,4 +10,5 @@ export interface ItemProps {
   agility?: number;
   itemLevel: number;
   price: Price;
-}
+  item_category: ItemCategory;
+};

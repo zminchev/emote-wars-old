@@ -12,7 +12,7 @@ module.exports = createCoreController(
     async find(ctx) {
       const entities = await strapi.entityService.findMany(
         "api::item-category.item-category",
-        { sort: { id: "ASC" }, populate: ["swords", "swords.price"] }
+        { sort: { id: "ASC" }, populate: ["items"] }
       );
       return entities;
     },
@@ -21,7 +21,7 @@ module.exports = createCoreController(
       const entity = await strapi.entityService.findOne(
         "api::item-category.item-category",
         id,
-        { populate: ["swords", "swords.price"] }
+        { populate: ["items", "items.price"] }
       );
       return entity;
     },

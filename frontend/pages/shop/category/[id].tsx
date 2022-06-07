@@ -4,15 +4,18 @@ import React from "react";
 import Page from "../../../components/UI/Page";
 import { Box, Container, Heading, Text } from "@chakra-ui/react";
 import Sword from "../../../components/Items/Sword/Sword";
+import Item from "../../../components/Items/Item";
 
 const Category = () => {
   const router = useRouter();
   const { id } = router.query;
   const { category } = useItemCategory(id!);
 
+  const categoryNameToLower = category?.name.toLowerCase();
+
   return (
     <Page>
-      <Box>
+      <Box h="95%">
         <Heading textAlign="center" mt="10">
           {category?.name}
         </Heading>
@@ -26,34 +29,39 @@ const Category = () => {
         >
           <Box maxW="100%" w="40%" h="150px" mt="12">
             <Text textAlign="center">
-              This is the sword shop. The better swords you buy, the more
-              powerful your Emote becomes. But in order to become more powerful,
-              one has to go through many difficult challenges and require many
-              resources!
+              This is the {categoryNameToLower} shop. The better{" "}
+              {categoryNameToLower} you buy, the more powerful your Emote
+              becomes. But in order to become the most powerful, one has to go
+              through many difficult challenges and aquire many resources!
             </Text>
           </Box>
           <Box
             maxW="100%"
             w="100%"
-            h="300px"
+            h="100%"
             mt="12"
             display="flex"
             alignItems="center"
             justifyContent="center"
+            flexWrap="wrap"
           >
-            {category && category.swords.length > 0 ? (
-              category.swords.map((sword) => (
-                <Sword
-                  key={sword.id}
-                  id={sword.id}
-                  name={sword.name}
-                  attack={sword.attack}
-                  itemLevel={sword.itemLevel}
-                  price={sword.price}
+            {category && category.items.length > 0 ? (
+              category.items.map((item) => (
+                <Item
+                  id={item.id}
+                  name={item.name}
+                  image={item.image}
+                  itemLevel={item.itemLevel}
+                  attack={item.attack ? item.attack : 0}
+                  defense={item.defense ? item.defense : 0}
+                  agility={item.agility ? item.agility : 0}
+                  price={item.price}
                 />
               ))
             ) : (
-              <Box>there are no items in the shop yet!</Box>
+              <Box>
+                <Text>There are no items to display !</Text>
+              </Box>
             )}
           </Box>
         </Container>

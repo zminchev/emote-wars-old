@@ -26,6 +26,12 @@
       "relation": "oneToMany",
       "target": "api::sword.sword",
       "mappedBy": "item_category"
+    },
+    "items": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::item.item",
+      "mappedBy": "item_category"
     }
   }
 }

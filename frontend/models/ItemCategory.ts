@@ -1,3 +1,4 @@
+import { Item } from "./Item";
 import { Sword } from "./Sword";
 
 export type ItemCategory = {
@@ -6,4 +7,5 @@ export type ItemCategory = {
   to: string;
   image: string;
   swords: Sword[];
+  items: Item[];
 };

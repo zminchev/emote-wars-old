@@ -9,6 +9,7 @@ interface CardProps {
   children: JSX.Element;
   width?: string;
   height?: string;
+  padding?: string;
 }
 
 const Card: React.FC<CardProps> = ({
@@ -18,10 +19,12 @@ const Card: React.FC<CardProps> = ({
   id,
   width,
   height,
+  padding,
   children,
 }) => {
   return (
     <Box
+      p={padding ? padding : "0"}
       pointerEvents={isDisabled ? "none" : "auto"}
       opacity={isDisabled ? "0.5" : "1"}
       w={width ? width : "25%"}

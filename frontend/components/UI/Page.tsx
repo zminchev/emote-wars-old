@@ -2,10 +2,11 @@ import { Box } from "@chakra-ui/react";
 import React from "react";
 
 interface PageProps {
+  overflow?: string;
   children: JSX.Element;
 }
 
-const Page: React.FC<PageProps> = ({ children }) => {
+const Page: React.FC<PageProps> = ({ overflow, children }) => {
   return (
     <Box
       maxW="full"
@@ -14,6 +15,7 @@ const Page: React.FC<PageProps> = ({ children }) => {
       borderLeft="1px solid"
       borderColor="whiteAlpha.700"
       color="whiteAlpha.900"
+      overflow={overflow ? overflow : undefined}
     >
       {children}
     </Box>
