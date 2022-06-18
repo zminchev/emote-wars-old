@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_items_prices",
+  "info": {
+    "displayName": "Price",
+    "icon": "adjust"
+  },
+  "options": {},
+  "attributes": {
+    "gold": {
+      "type": "biginteger"
+    },
+    "wood": {
+      "type": "biginteger"
+    },
+    "diamonds": {
+      "type": "biginteger"
+    }
+  }
+}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Container,
@@ -8,13 +8,13 @@ import {
   Heading,
   Button,
   Spinner,
-} from "@chakra-ui/react";
-import { Formik, Form } from "formik";
-import { loginSchema } from "../../validation/loginSchema";
-import FormInput from "./FormInput";
-import Link from "next/link";
-import { signIn, useSession } from "next-auth/react";
-import { useRouter } from "next/router";
+} from '@chakra-ui/react';
+import { Formik, Form } from 'formik';
+import { loginSchema } from '../../../validation/loginSchema';
+import FormInput from '../FormInput/FormInput';
+import Link from 'next/link';
+import { signIn, useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
 
 interface FormValues {
   email: string;
@@ -25,8 +25,8 @@ const LoginForm = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const initialValues: FormValues = {
-    email: "",
-    password: "",
+    email: '',
+    password: '',
   };
 
   const router = useRouter();
@@ -34,8 +34,8 @@ const LoginForm = () => {
 
   useEffect(() => {
     if (session) {
-      router.push("/");
-      localStorage.setItem("userJwt", session.user.jwt);
+      router.push('/');
+      localStorage.setItem('userJwt', session.user.jwt);
     }
   }, [session]);
 
@@ -58,7 +58,7 @@ const LoginForm = () => {
               validationSchema={loginSchema}
               onSubmit={async (values, { setSubmitting }) => {
                 setIsLoading(true);
-                await signIn("credentials", {
+                await signIn('credentials', {
                   redirect: false,
                   email: values.email,
                   password: values.password,
@@ -98,13 +98,13 @@ const LoginForm = () => {
                         w="100%"
                         mt="10"
                         color="black"
-                        backgroundColor={isLoading ? "gray" : "cyan"}
+                        backgroundColor={isLoading ? 'gray' : 'cyan'}
                         borderRadius="0"
                         type="submit"
                         disabled={isLoading}
-                        _disabled={{ pointerEvents: "none" }}
+                        _disabled={{ pointerEvents: 'none' }}
                       >
-                        {isLoading ? <Spinner speed="0.3s" /> : "Login"}
+                        {isLoading ? <Spinner speed="0.3s" /> : 'Login'}
                       </Button>
                       <Box
                         color="cyan"

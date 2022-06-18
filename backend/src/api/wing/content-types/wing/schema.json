@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "collectionName": "wings",
+  "info": {
+    "singularName": "wing",
+    "pluralName": "wings",
+    "displayName": "Wing",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "agility": {
+      "type": "biginteger"
+    },
+    "price": {
+      "type": "component",
+      "repeatable": false,
+      "component": "items.price"
+    },
+    "itemLevel": {
+      "type": "biginteger"
+    }
+  }
+}

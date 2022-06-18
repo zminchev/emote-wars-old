@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Box,
   Container,
@@ -7,12 +7,12 @@ import {
   FormControl,
   Heading,
   Button,
-} from "@chakra-ui/react";
-import { Formik, Form } from "formik";
-import { registerSchema } from "../../validation/registerSchema";
-import FormInput from "./FormInput";
-import Link from "next/link";
-import { register } from "../../queries/register";
+} from '@chakra-ui/react';
+import { Formik, Form } from 'formik';
+import { registerSchema } from '../../../validation/registerSchema';
+import FormInput from '../FormInput/FormInput';
+import Link from 'next/link';
+import { register } from '../../../queries/register';
 
 interface FormValues {
   username: string;
@@ -22,9 +22,9 @@ interface FormValues {
 
 const LoginForm = () => {
   const initialValues: FormValues = {
-    username: "",
-    email: "",
-    password: "",
+    username: '',
+    email: '',
+    password: '',
   };
 
   return (
