@@ -3,12 +3,12 @@ import { Price } from "./Price";
 
 export type Item = {
   id: string;
-  name: string;
-  image: string;
+  name?: string;
+  image?: string;
   attack?: number;
   defense?: number;
   agility?: number;
-  itemLevel: number;
+  itemLevel?: number;
   price: Price;
-  item_category: ItemCategory;
+  item_category?: ItemCategory;
 };

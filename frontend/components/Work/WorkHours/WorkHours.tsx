@@ -1,6 +1,6 @@
-import { Box, Center, Heading } from "@chakra-ui/react";
-import React from "react";
-import Card from "../UI/Card";
+import { Box, Center, Heading } from '@chakra-ui/react';
+import React from 'react';
+import Card from '../../UI/Card';
 
 interface WorkHoursProps {
   id: string;

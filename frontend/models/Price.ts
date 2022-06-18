@@ -1,5 +1,5 @@
 export type Price = {
-  id: string;
+  id?: string;
   gold: number;
   wood: number;
   diamonds: number;

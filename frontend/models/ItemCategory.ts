@@ -1,11 +1,10 @@
-import { Item } from "./Item";
-import { Sword } from "./Sword";
+import { Item } from './Item';
+import { Sword } from './Sword';
 
 export type ItemCategory = {
-  id: string;
+  id?: string;
   name: string;
   to: string;
   image: string;
-  swords: Sword[];
   items: Item[];
 };
