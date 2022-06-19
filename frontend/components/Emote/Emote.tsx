@@ -6,9 +6,17 @@ export interface EmoteProps {
   name?: string;
   level?: number;
   experience?: number;
+  experienceNeeded?: number;
+  percentExperience?: string;
 }
 
-const Emote: React.FC<EmoteProps> = ({ name, level, experience }) => {
+const Emote: React.FC<EmoteProps> = ({
+  name,
+  level,
+  experience,
+  experienceNeeded,
+  percentExperience,
+}) => {
   return (
     <Box
       maxW="full"
@@ -24,9 +32,15 @@ const Emote: React.FC<EmoteProps> = ({ name, level, experience }) => {
         <Divider orientation="vertical" color="red" h="4" ml="2" mr="2" />
         <Text>{level}</Text>
       </Box>
-      <Text textAlign="center">Experience: {experience}</Text>
+      <Text textAlign="center">
+        Experience: {experience} / {experienceNeeded}
+      </Text>
       <Box display="flex" justifyContent="center">
-        <ProgressBar type="experience" progress={experience!} height="4" />
+        <ProgressBar
+          type="experience"
+          progress={percentExperience!}
+          height="4"
+        />
       </Box>
     </Box>
   );
