@@ -1,19 +1,20 @@
-import { Box, Container, Heading, Text } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
-import React, { useEffect, useState } from "react";
-import Timer from "../../components/Work/Timer/Timer";
-import WorkHours from "../../components/Work/WorkHours";
-import { useWorkHours } from "../../queries/useWorkHours";
-import { useAppDispatch, useAppSelector } from "../../store/hooks/hooks";
-import { setTimerStatus } from "../../store/slices/timerSlice";
-import { endAction } from "../../utils/endAction";
-import { ActionType } from "../../utils/Actions/ActionType";
-import { setActionType } from "../../store/slices/actionSlice";
-import { TimerStatus } from "../../utils/TimerStatus/TimerStatus";
-import { updateResources } from "../../utils/Resources/updateResources";
-import { useUser } from "../../queries/useUser";
-import { updateTimer } from "../../queries/updateTimer";
-import Page from "../../components/UI/Page";
+import { Box, Container, Text } from '@chakra-ui/react';
+import { useSession } from 'next-auth/react';
+import React, { useEffect, useState } from 'react';
+import Timer from '../../components/Work/Timer/Timer';
+import WorkHours from '../../components/Work/WorkHours';
+import { useWorkHours } from '../../queries/useWorkHours';
+import { useAppDispatch, useAppSelector } from '../../store/hooks/hooks';
+import { setTimerStatus } from '../../store/slices/timerSlice';
+import { endAction } from '../../utils/endAction';
+import { ActionType } from '../../utils/Actions/ActionType';
+import { setActionType } from '../../store/slices/actionSlice';
+import { TimerStatus } from '../../utils/TimerStatus/TimerStatus';
+import { updateResources } from '../../utils/Resources/updateResources';
+import { useUser } from '../../queries/useUser';
+import { updateTimer } from '../../queries/updateTimer';
+import Page from '../../components/UI/Page';
+import PageHeader from '../../components/UI/Page/PageHeader';
 
 const Work = () => {
   const { data: session } = useSession();
@@ -63,7 +64,7 @@ const Work = () => {
         });
         const endTimerData = {
           timer: {
-            startTime: "0",
+            startTime: '0',
             isWorking: false,
             hoursToWork: 0,
             activeHourId: 0,
@@ -110,9 +111,7 @@ const Work = () => {
   return (
     <Page>
       <Box>
-        <Heading textAlign="center" mt="10">
-          Work
-        </Heading>
+        <PageHeader text="Work" textAlign="center" mt="10" />
         <Container
           maxW="full"
           w="100%"
@@ -128,9 +127,12 @@ const Work = () => {
               purchase items from the shop, or trade with other players.
             </Text>
           </Box>
-          <Heading textAlign="center">
-            Choose how long you would like to work
-          </Heading>
+
+          <PageHeader
+            text="Choose how long you would like to work"
+            textAlign="center"
+            type="secondary"
+          />
           <Box maxW="100%" w="100%" h="300px" mt="12" display="flex">
             {workHours && workHours.length > 0
               ? workHours.map((hours, index) => (

@@ -1,5 +1,5 @@
-import { User } from "../../models/User";
-import { ActionType } from "../Actions/ActionType";
+import { User } from '../../models/User';
+import { ActionType } from '../Actions/ActionType';
 
 export const updateResources = async (
   reward: number[],
@@ -9,10 +9,10 @@ export const updateResources = async (
 ) => {
   if (user) {
     await fetch(`http://localhost:1337/api/users/${user.id}`, {
-      method: "PUT",
+      method: 'PUT',
       headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
         Authorization: `Bearer ${session?.user.jwt}`,
       },
       body: JSON.stringify({

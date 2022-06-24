@@ -1,5 +1,6 @@
 import { Timer } from './Timer';
 import { Role } from './Role';
+import { Resource } from './Resource';
 
 export type User = {
   id?: number;
@@ -14,4 +15,7 @@ export type User = {
   timer: Timer;
   level: number;
   experience?: number;
+  resource: {
+    material: Resource[];
+  };
 };
