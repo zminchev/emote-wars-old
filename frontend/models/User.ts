@@ -1,5 +1,5 @@
-import { Timer } from "./Timer";
-import { Role } from "./Role";
+import { Timer } from './Timer';
+import { Role } from './Role';
 
 export type User = {
   id?: number;
@@ -13,4 +13,5 @@ export type User = {
   role: Role;
   timer: Timer;
   level: number;
+  experience?: number;
 };

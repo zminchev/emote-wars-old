@@ -1,15 +1,14 @@
 import '../styles/globals.css';
 import type { AppProps } from 'next/app';
-import { Box, ChakraProvider } from '@chakra-ui/react';
+import { ChakraProvider } from '@chakra-ui/react';
 import { SessionProvider, signIn, useSession } from 'next-auth/react';
 import { SWRConfig } from 'swr';
 import { fetcher } from '../fetcher/fetcher';
-import Header from '../components/Resources/Header/Header';
 import { useRouter } from 'next/router';
-import Navbar from '../components/Navigation/Navbar';
 import { Provider } from 'react-redux';
 import { store } from '../store';
 import { useEffect } from 'react';
+import Layout from '../components/Layout';
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const router = useRouter();
@@ -21,15 +20,11 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
         <ChakraProvider>
           <SWRConfig value={{ fetcher }}>
             {pathname !== '/login' && pathname !== '/register' ? (
-              <Box>
-                <Header />
-                <Box h="calc(100vh - 100px)" display="flex">
-                  <Navbar />
-                  <Auth>
-                    <Component {...pageProps} />
-                  </Auth>
-                </Box>
-              </Box>
+              <Layout>
+                <Auth>
+                  <Component {...pageProps} />
+                </Auth>
+              </Layout>
             ) : (
               <Component {...pageProps} />
             )}
