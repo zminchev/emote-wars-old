@@ -1,19 +1,18 @@
-import { Box, Center, Container, Heading, Text, Image } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
-import React from "react";
-import { useItemCategories } from "../../queries/useItemCategories";
-import Card from "../../components/UI/Card";
-import Link from "next/link";
-import Page from "../../components/UI/Page";
+import { Box, Center, Container, Heading, Text, Image } from '@chakra-ui/react';
+import { useSession } from 'next-auth/react';
+import React from 'react';
+import { useItemCategories } from '../../queries/useItemCategories';
+import Card from '../../components/UI/Card';
+import Link from 'next/link';
+import Page from '../../components/UI/Page';
+import PageHeader from '../../components/UI/Page/PageHeader';
 const Shop = () => {
   const { data: session } = useSession();
   const { categories } = useItemCategories(session);
   return (
     <Page>
       <Box>
-        <Heading textAlign="center" mt="10">
-          Shop
-        </Heading>
+        <PageHeader text="Shop" textAlign="center" mt="10" />
         <Container
           maxW="full"
           w="100%"
@@ -29,7 +28,11 @@ const Shop = () => {
               powerful and intimidating.
             </Text>
           </Box>
-          <Heading textAlign="center">Choose a category</Heading>
+          <PageHeader
+            text="Choose a category"
+            textAlign="center"
+            type="secondary"
+          />
           <Box
             maxW="100%"
             w="100%"

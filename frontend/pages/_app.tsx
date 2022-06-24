@@ -9,6 +9,7 @@ import { Provider } from 'react-redux';
 import { store } from '../store';
 import { useEffect } from 'react';
 import Layout from '../components/Layout';
+import AuthLayout from '../components/Layout/AuthLayout';
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const router = useRouter();
@@ -26,7 +27,9 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
                 </Auth>
               </Layout>
             ) : (
-              <Component {...pageProps} />
+              <AuthLayout>
+                <Component {...pageProps} />
+              </AuthLayout>
             )}
           </SWRConfig>
         </ChakraProvider>

@@ -1,13 +1,13 @@
-import { Box, Square, Text } from "@chakra-ui/react";
-import React from "react";
+import { Box, Square, Text } from '@chakra-ui/react';
+import React from 'react';
 
-interface ResourceProps {
+interface ResourceItemProps {
   name: string;
-  value: number;
+  value: number | undefined;
   image: string;
 }
 
-const Resource: React.FC<ResourceProps> = ({ value, image }) => {
+const ResourceItem: React.FC<ResourceItemProps> = ({ value, image }) => {
   return (
     <Box color="white">
       <Square
@@ -24,4 +24,4 @@ const Resource: React.FC<ResourceProps> = ({ value, image }) => {
   );
 };
 
-export default Resource;
+export default ResourceItem;
