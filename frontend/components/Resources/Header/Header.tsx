@@ -8,8 +8,8 @@ import ResourcesDisplay from '../ResourcesDisplay';
 const Header = () => {
   const { data: session } = useSession();
   const { user } = useUser(session);
-  console.log('test');
-  console.log('tes1');
+  console.log('test1');
+  console.log('tes12');
 
   return (
     <Box
