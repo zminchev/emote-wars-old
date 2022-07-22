@@ -1,14 +1,15 @@
-import { Box, Heading } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
-import React from "react";
-import useSWR from "swr";
-import { useUser } from "../../queries/useUser";
+import { Box, Heading } from '@chakra-ui/react';
+import { useSession } from 'next-auth/react';
+import React from 'react';
+import useSWR from 'swr';
+import { useUser } from '../../queries/useUser';
 
-import Resource from "./Resource";
+import Resource from './Resource';
 
 const Header = () => {
   const { data: session } = useSession();
   const { user } = useUser(session);
+  console.log('test');
 
   return (
     <Box
