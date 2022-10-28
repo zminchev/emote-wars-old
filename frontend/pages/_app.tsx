@@ -41,6 +41,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
 function Auth({ children }: any) {
   const { data: session, status } = useSession();
   const user = !!session?.user;
+  const router = useRouter();
 
   useEffect(() => {
     if (status === 'unauthenticated') {

@@ -4,6 +4,7 @@ import { useSession } from 'next-auth/react';
 import { useEffect, useMemo } from 'react';
 import Emote from '../components/Emote';
 import Page from '../components/UI/Page';
+import { User } from '../models/User';
 import { useUser } from '../queries/useUser';
 
 const Home: NextPage = () => {
@@ -33,7 +34,7 @@ const Home: NextPage = () => {
         level: +user?.level! + 1,
       }),
     });
-    return user!;
+    return user as User;
   };
   useEffect(() => {
     //TODO Extra experience should persist to the next level
